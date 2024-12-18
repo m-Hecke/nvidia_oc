@@ -7,7 +7,7 @@ NVIDIA_OC is a simple Rust CLI tool designed to overclock NVIDIA GPUs on Linux. 
 To set the overclock parameters for your NVIDIA GPU, use the following command:
 
 ```bash
-./nvidia_oc set --index 0 --power-limit 200000 --freq-offset 160 --mem-offset 850
+./nvidia_oc set --index 0 --power-limit 200000 --freq-offset 160 --mem-offset 850 --min-clock 0 --max-clock 2000
 ```
 
 ## Run on Startup
@@ -24,7 +24,7 @@ Description=NVIDIA Overclocking Service
 After=network.target
 
 [Service]
-ExecStart=[path_to_binary]/nvidia_oc set --index 0 --power-limit 200000 --freq-offset 160 --mem-offset 850
+ExecStart=[path_to_binary]/nvidia_oc set --index 0 --power-limit 200000 --freq-offset 160 --mem-offset 850 --min-clock 0 --max-clock 2000
 User=root
 Restart=on-failure
 

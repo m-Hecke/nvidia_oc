@@ -3,7 +3,9 @@
     "0": {
       "freqOffset": 200000,
       "memOffset": 160,
-      "powerLimit": 500
+      "powerLimit": 500,
+      "minClock": 0,
+      "maxClock": 2000
     }
   }
 }

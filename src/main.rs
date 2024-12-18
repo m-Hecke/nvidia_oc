@@ -42,11 +42,17 @@ struct Sets {
     #[arg(short, long)]
     freq_offset: Option<i32>,
     /// GPU memory frequency offset
-    #[arg(short, long)]
+    #[arg(long = "mem-offset")]
     mem_offset: Option<i32>,
     /// GPU power limit in milliwatts
     #[arg(short, long)]
     power_limit: Option<u32>,
+    /// GPU min clock
+    #[arg(long = "min-clock")]
+    min_clock: Option<u32>,
+    /// GPU max clock
+    #[arg(long = "max-clock")]
+    max_clock: Option<u32>,
 }
 
 impl Sets {
@@ -63,6 +69,11 @@ impl Sets {
 
         if let Some(limit) = self.power_limit {
             set_gpu_power_limit(&nvml, device, limit).expect("Failed to set GPU power limit");
+        }
+
+        if let (Some(min_clock), Some(max_clock)) = (self.min_clock, self.max_clock) {
+            set_gpu_min_max_clock(&nvml, device, min_clock, max_clock)
+                .expect("Failed to set GPU min and max clocks");
         }
     }
 }
@@ -172,6 +183,20 @@ fn set_gpu_memory_frequency_offset(
 
 fn set_gpu_power_limit(nvml_lib: &NvmlLib, handle: nvmlDevice_t, limit: u32) -> Result<(), String> {
     let result = unsafe { nvml_lib.nvmlDeviceSetPowerManagementLimit(handle, limit) };
+    if result != 0 {
+        Err(format!("Error code: {}", result))
+    } else {
+        Ok(())
+    }
+}
+
+fn set_gpu_min_max_clock(
+    nvml_lib: &NvmlLib,
+    handle: nvmlDevice_t,
+    minclock: u32,
+    maxclock: u32,
+) -> Result<(), String> {
+    let result = unsafe { nvml_lib.nvmlDeviceSetGpuLockedClocks(handle, minclock, maxclock) };
     if result != 0 {
         Err(format!("Error code: {}", result))
     } else {

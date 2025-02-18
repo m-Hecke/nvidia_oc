@@ -57,10 +57,10 @@ struct Sets {
     #[arg(short, long)]
     power_limit: Option<u32>,
     /// GPU min clock
-    #[arg(long)]
+    #[arg(long, requires = "max_clock")]
     min_clock: Option<u32>,
     /// GPU max clock
-    #[arg(long)]
+    #[arg(long, requires = "min_clock")]
     max_clock: Option<u32>,
 }
 

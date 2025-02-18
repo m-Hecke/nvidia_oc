@@ -62,6 +62,12 @@ struct Sets {
     /// GPU max clock
     #[arg(long, requires = "min_clock")]
     max_clock: Option<u32>,
+    /// GPU min memory clock
+    #[arg(long, requires = "max_mem_clock")]
+    min_mem_clock: Option<u32>,
+    /// GPU max memory clock
+    #[arg(long, requires = "min_mem_clock")]
+    max_mem_clock: Option<u32>,
 }
 
 impl Sets {
@@ -83,6 +89,12 @@ impl Sets {
         if let (Some(min_clock), Some(max_clock)) = (self.min_clock, self.max_clock) {
             set_gpu_min_max_clock(&nvml, device, min_clock, max_clock)
                 .expect("Failed to set GPU min and max clocks");
+        }
+
+        if let (Some(min_mem_clock), Some(max_mem_clock)) = (self.min_mem_clock, self.max_mem_clock)
+        {
+            set_gpu_min_max_mem_clock(&nvml, device, min_mem_clock, max_mem_clock)
+                .expect("Failed to set GPU min and max memory clocks");
         }
     }
 }
@@ -251,6 +263,20 @@ fn set_gpu_min_max_clock(
     maxclock: u32,
 ) -> Result<(), String> {
     let result = unsafe { nvml_lib.nvmlDeviceSetGpuLockedClocks(handle, minclock, maxclock) };
+    if result != 0 {
+        Err(format!("Error code: {}", result))
+    } else {
+        Ok(())
+    }
+}
+
+fn set_gpu_min_max_mem_clock(
+    nvml_lib: &NvmlLib,
+    handle: nvmlDevice_t,
+    minclock: u32,
+    maxclock: u32,
+) -> Result<(), String> {
+    let result = unsafe { nvml_lib.nvmlDeviceSetMemoryLockedClocks(handle, minclock, maxclock) };
     if result != 0 {
         Err(format!("Error code: {}", result))
     } else {

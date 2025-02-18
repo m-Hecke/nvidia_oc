@@ -51,16 +51,16 @@ struct Sets {
     #[arg(short, long, allow_hyphen_values = true)]
     freq_offset: Option<i32>,
     /// GPU memory frequency offset
-    #[arg(long = "mem-offset", allow_hyphen_values = true)]
+    #[arg(long, allow_hyphen_values = true)]
     mem_offset: Option<i32>,
     /// GPU power limit in milliwatts
     #[arg(short, long)]
     power_limit: Option<u32>,
     /// GPU min clock
-    #[arg(long = "min-clock")]
+    #[arg(long)]
     min_clock: Option<u32>,
     /// GPU max clock
-    #[arg(long = "max-clock")]
+    #[arg(long)]
     max_clock: Option<u32>,
 }
 

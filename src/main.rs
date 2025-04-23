@@ -141,21 +141,21 @@ fn main() {
                 let freq_offset =
                     get_value(|v| nvml_lib.nvmlDeviceGetGpcClkVfOffset(raw_device_handle, v));
                 match freq_offset {
-                    Ok(freq_offset) => println!("GPU frequency offset: {} Hz", freq_offset),
-                    Err(e) => eprintln!("Failed to get GPU frequency offset: {:?}", e),
+                    Ok(freq_offset) => println!("GPU core clock offset: {} MHz", freq_offset),
+                    Err(e) => eprintln!("Failed to get GPU core clock offset: {:?}", e),
                 }
 
                 let mem_offset =
                     get_value(|v| nvml_lib.nvmlDeviceGetMemClkVfOffset(raw_device_handle, v));
                 match mem_offset {
-                    Ok(mem_offset) => println!("GPU memory frequency offset: {} Hz", mem_offset),
-                    Err(e) => eprintln!("Failed to get GPU memory frequency offset: {:?}", e),
+                    Ok(mem_offset) => println!("GPU memory clock offset: {} MHz", mem_offset),
+                    Err(e) => eprintln!("Failed to get GPU memory clock offset: {:?}", e),
                 }
 
                 let power_limit =
-                    get_value(|v| nvml_lib.nvmlDeviceGetPowerManagementLimit(raw_device_handle, v));
+                    get_value(|v| nvml_lib.nvmlDeviceGetEnforcedPowerLimit(raw_device_handle, v));
                 match power_limit {
-                    Ok(power_limit) => println!("GPU power limit: {} mW", power_limit),
+                    Ok(power_limit) => println!("GPU power limit: {} W", power_limit / 1000),
                     Err(e) => eprintln!("Failed to get GPU power limit: {:?}", e),
                 }
             }

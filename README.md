@@ -1,4 +1,4 @@
-# NVIDIA_OC
+# NVIDIA_OC WARNING!! This has been modified by an AI
 
 NVIDIA_OC is a simple Rust CLI tool designed to overclock NVIDIA GPUs on Linux. This tool was developed to support both X11 and Wayland environments, addressing a gap in existing overclocking tools that only support X11.
 
